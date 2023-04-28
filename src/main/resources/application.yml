@@ -1,0 +1,15 @@
+api:
+  text:
+    model: text-davinci-003
+    temperature: 0.7
+    max-tokens: 2048
+    top-p: 1
+    frequency-penalty: 0
+    presence-penalty: 0
+  token: Bearer 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
+  url:
+    completions: https://api.openai.com/v1/completions
+google:
+  cloud:
+    api:
+      key: AIzaSyDueE7s--JDygDSwSld56Hs6sbT1p5clvw
