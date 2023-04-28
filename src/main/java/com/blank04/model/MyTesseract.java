@@ -15,7 +15,7 @@ public class MyTesseract {
             tesseract.setDatapath("src/main/resources/traindata/LSTM");
             tesseract.setLanguage("eng+ukr+rus");
             tesseract.setOcrEngineMode(1);
-            tesseract.setVariable("user_defined_dpi", "300");
+            tesseract.setVariable("user_defined_dpi", "72");
         }
         return tesseract;
     }
