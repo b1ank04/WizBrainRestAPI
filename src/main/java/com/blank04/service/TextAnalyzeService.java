@@ -10,7 +10,6 @@ import java.io.File;
 
 @Service
 public class TextAnalyzeService {
-
     public String analyzePicture(File file) throws TesseractException {
         Tesseract tesseract = MyTesseract.getInstance();
         return tesseract.doOCR(file);
