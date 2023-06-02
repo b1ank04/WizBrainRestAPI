@@ -1,4 +1,7 @@
 api:
+  google:
+    application_name: For google sheets
+    credentials: creds.json
   text:
     model: text-davinci-003
     temperature: 0.7

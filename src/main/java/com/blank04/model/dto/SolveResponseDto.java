@@ -1,19 +1,19 @@
-package com.blank04.model;
+package com.blank04.model.dto;
 
 import lombok.Data;
 
 @Data
-public class ResultDto {
+public class SolveResponseDto {
     private String request;
     private String response;
     private String error;
 
-    public ResultDto(String request, String response) {
+    public SolveResponseDto(String request, String response) {
         this.request = request;
         this.response = response;
     }
 
-    public ResultDto(String error) {
+    public SolveResponseDto(String error) {
         this.error = error;
     }
 }

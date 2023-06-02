@@ -1,13 +1,12 @@
 package com.blank04.service;
 
-import com.blank04.model.ResultDto;
+import com.blank04.model.dto.SolveResponseDto;
+import com.blank04.utils.FileConverter;
 import net.sourceforge.tess4j.TesseractException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
@@ -15,30 +14,23 @@ import java.io.IOException;
 public class SolverService {
 
     private final ChatGPTService chatGPTService;
-    private final TextAnalyzeService textAnalyzeService;
+    private final ImageAnalyzeService imageAnalyzeService;
+    private final DocumentAnalyzeService documentAnalyzeService;
 
-    public SolverService(ChatGPTService chatGPTService, TextAnalyzeService textAnalyzeService) {
+    public SolverService(ChatGPTService chatGPTService, ImageAnalyzeService imageAnalyzeService, DocumentAnalyzeService documentAnalyzeService) {
         this.chatGPTService = chatGPTService;
-        this.textAnalyzeService = textAnalyzeService;
+        this.imageAnalyzeService = imageAnalyzeService;
+        this.documentAnalyzeService = documentAnalyzeService;
     }
 
-    public ResultDto solveImage(MultipartFile image) throws TesseractException, IOException {
-        File uploadDir = new File("uploads");
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-        File uploadedFile = new File(uploadDir.getAbsolutePath() + File.separator + image.getOriginalFilename());
-        image.transferTo(uploadedFile);
-        String text = textAnalyzeService.analyzePicture(uploadedFile);
-        return new ResultDto(text, chatGPTService.askChatGPTText(text));
+    public SolveResponseDto solveImage(MultipartFile image) throws TesseractException, IOException {
+        BufferedImage bufferedImage = FileConverter.convertMultipart(image);
+        String text = imageAnalyzeService.analyzeImage(bufferedImage);
+        return new SolveResponseDto(text, chatGPTService.askChatGPTText(text));
     }
 
-    public ResultDto solvePdf(MultipartFile file) throws IOException {
-        try (PDDocument document = PDDocument.load(file.getInputStream())) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            String text = stripper.getText(document);
-            return new ResultDto(text, chatGPTService.askChatGPTText(text));
-        }
+    public SolveResponseDto solvePdf(MultipartFile file) throws IOException {
+        String text = documentAnalyzeService.analyzePdf(file);
+        return new SolveResponseDto(text, chatGPTService.askChatGPTText(text));
     }
-
 }
