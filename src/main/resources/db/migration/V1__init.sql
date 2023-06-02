@@ -1,6 +1,6 @@
 create table requests_history(
-    id SERIAL,
-    type varchar,
-    request_text text,
-    response_text text
+    id int,
+    type nvarchar(255),
+    request_text ntext,
+    response_text ntext
 )

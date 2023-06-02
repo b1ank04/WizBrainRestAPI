@@ -1,7 +1,6 @@
 package com.blank04.service;
 
 import com.blank04.model.Request;
-import com.blank04.repository.RequestRepository;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +13,10 @@ import java.net.http.HttpResponse;
 @Component
 public class TextAnalyzeService {
 
-    private final RequestRepository requestRepository;
+    private final RequestService requestService;
 
-    public TextAnalyzeService(RequestRepository requestRepository) {
-        this.requestRepository = requestRepository;
+    public TextAnalyzeService(RequestService requestService) {
+        this.requestService = requestService;
     }
 
     public String summarize(String text) throws IOException, InterruptedException {
@@ -34,7 +33,7 @@ public class TextAnalyzeService {
         if (result.length() < 10) {
             result = "The text you sent is too small to summarize";
         }
-        requestRepository.save(new Request(null, "SUMMARIZE_TEXT", text, result));
+        requestService.save("SUMMARIZE_TEXT", text, result);
         return result;
     }
 }

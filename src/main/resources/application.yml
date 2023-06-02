@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/wizbrain_db
-    username: postgres
-    password: 1234
-
+    url: jdbc:sqlserver://wizbrain.database.windows.net:1433;database=wizbrain_db;user=blank@wizbrain;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: blank
+    password: aV31071969
+  flyway:
+    baseline-on-migrate: true
 api:
   text:
     model: text-davinci-003
