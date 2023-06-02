@@ -1,5 +1,7 @@
 package com.blank04.service;
 
+import com.blank04.model.Request;
+import com.blank04.repository.RequestRepository;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,12 @@ import java.net.http.HttpResponse;
 @Component
 public class TextAnalyzeService {
 
+    private final RequestRepository requestRepository;
+
+    public TextAnalyzeService(RequestRepository requestRepository) {
+        this.requestRepository = requestRepository;
+    }
+
     public String summarize(String text) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://gpt-summarization.p.rapidapi.com/summarize"))
@@ -22,6 +30,8 @@ public class TextAnalyzeService {
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseObject = new JSONObject(response.body());
-        return responseObject.getString("summary");
+        String result = responseObject.getString("summary");
+        requestRepository.save(new Request(null, "SUMMARIZE_TEXT", text, result));
+        return result;
     }
 }

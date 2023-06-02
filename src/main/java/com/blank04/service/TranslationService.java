@@ -1,6 +1,8 @@
 package com.blank04.service;
 
 import com.blank04.model.MyTranslator;
+import com.blank04.model.Request;
+import com.blank04.repository.RequestRepository;
 import com.blank04.utils.FileConverter;
 import com.deepl.api.DeepLException;
 import net.sourceforge.tess4j.TesseractException;
@@ -19,10 +21,12 @@ import java.net.http.HttpResponse;
 public class TranslationService {
 
     private final ImageAnalyzeService imageAnalyzeService;
+    private final RequestRepository requestRepository;
 
 
-    public TranslationService(ImageAnalyzeService imageAnalyzeService) {
+    public TranslationService(ImageAnalyzeService imageAnalyzeService, RequestRepository requestRepository) {
         this.imageAnalyzeService = imageAnalyzeService;
+        this.requestRepository = requestRepository;
     }
 
 
@@ -40,12 +44,16 @@ public class TranslationService {
     }
 
     public String translateTextDeepL(String text, String newLanguage) throws InterruptedException, DeepLException {
-        return MyTranslator.getInstance().translateText(text, null, newLanguage).getText();
+        String result = MyTranslator.getInstance().translateText(text, null, newLanguage).getText();
+        requestRepository.save(new Request(null, "TRANSLATE_TEXT", text, result));
+        return result;
     }
 
     public String translateImage(MultipartFile file, String newLanguage) throws IOException, TesseractException, InterruptedException {
         BufferedImage image = FileConverter.convertMultipart(file);
         String text = imageAnalyzeService.analyzeImage(image);
-        return translateTextRapidAPI(text, newLanguage);
+        String result = translateTextRapidAPI(text, newLanguage);
+        requestRepository.save(new Request(null, "TRANSLATE_IMAGE", text, result));
+        return result;
     }
 }

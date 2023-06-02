@@ -1,7 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wizbrain_db
+    username: postgres
+    password: 1234
+
 api:
-  google:
-    application_name: For google sheets
-    credentials: creds.json
   text:
     model: text-davinci-003
     temperature: 0.7
