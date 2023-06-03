@@ -16,3 +16,5 @@ api:
   token: Bearer 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
   url:
     completions: https://api.openai.com/v1/completions
+server:
+  port: 80
