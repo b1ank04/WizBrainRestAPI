@@ -47,10 +47,10 @@ public class TranslationService {
         return result;
     }
 
-    public String translateImage(MultipartFile file, String newLanguage) throws IOException, TesseractException, InterruptedException {
+    public String translateImage(MultipartFile file, String newLanguage) throws IOException, TesseractException, InterruptedException, DeepLException {
         BufferedImage image = FileConverter.convertMultipart(file);
         String text = imageAnalyzeService.analyzeImage(image);
-        String result = translateTextRapidAPI(text, newLanguage);
+        String result = translateTextDeepL(text, newLanguage);
         requestService.save("TRANSLATE_IMAGE",text, result);
         return result;
     }

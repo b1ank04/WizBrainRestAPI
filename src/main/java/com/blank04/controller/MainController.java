@@ -61,7 +61,7 @@ public class MainController {
 
     @PostMapping("/translateFile")
     public ResponseEntity<String> translateFile(@RequestParam("file") MultipartFile file,
-                                                @RequestParam("new_language") String newLanguage) throws IOException, TesseractException, InterruptedException {
+                                                @RequestParam("new_language") String newLanguage) throws IOException, TesseractException, InterruptedException, DeepLException {
         String fileType = tika.detect(file.getBytes());
         String translatedText = "";
         if (fileType.equals("image/png") || fileType.equals("image/jpg") || fileType.equals("image/jpeg")) {
