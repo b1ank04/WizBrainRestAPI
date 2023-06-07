@@ -4,6 +4,9 @@ import com.blank04.model.Request;
 import com.blank04.repository.RequestRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class RequestService {
 
@@ -15,5 +18,11 @@ public class RequestService {
 
     public void save(String type, String request, String response) {
         requestRepository.save(new Request(null, type, request, response));
+    }
+
+    public List<Request> history() {
+        List<Request> requests = requestRepository.findAll();
+        Collections.reverse(requests);
+        return requests;
     }
 }

@@ -1,6 +1,8 @@
 package com.blank04.controller;
 
+import com.blank04.model.Request;
 import com.blank04.model.dto.SolveResponseDto;
+import com.blank04.service.RequestService;
 import com.blank04.service.SolverService;
 import com.blank04.service.TextAnalyzeService;
 import com.blank04.service.TranslationService;
@@ -8,13 +10,11 @@ import com.deepl.api.DeepLException;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.tika.Tika;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1")
@@ -23,12 +23,19 @@ public class MainController {
     private final SolverService solverService;
     private final TranslationService translationService;
     private final TextAnalyzeService textAnalyzeService;
+    private final RequestService requestService;
     private final Tika tika = new Tika();
 
-    public MainController(SolverService solverService, TranslationService translationService, TextAnalyzeService textAnalyzeService) {
+    public MainController(SolverService solverService, TranslationService translationService, TextAnalyzeService textAnalyzeService, RequestService requestService) {
         this.solverService = solverService;
         this.translationService = translationService;
         this.textAnalyzeService = textAnalyzeService;
+        this.requestService = requestService;
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<Request>> history() {
+        return ResponseEntity.ok(requestService.history());
     }
 
     @PostMapping("/solve")
