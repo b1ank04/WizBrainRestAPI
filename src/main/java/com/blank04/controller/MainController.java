@@ -71,7 +71,7 @@ public class MainController {
     }
 
     @PostMapping("/summarize")
-    public ResponseEntity<String> summarize(@RequestParam("text") String text) throws IOException, InterruptedException {
+    public ResponseEntity<String> summarize(@RequestParam("text") String text) {
         return ResponseEntity.ok(textAnalyzeService.summarize(text));
     }
 }

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 
-
 @Service
 public class ImageAnalyzeService {
     public String analyzeImage(BufferedImage image) throws TesseractException {
         Tesseract tesseract = MyTesseract.getInstance();
         return tesseract.doOCR(image);
     }
+
 }

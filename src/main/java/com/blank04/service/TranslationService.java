@@ -1,7 +1,6 @@
 package com.blank04.service;
 
 import com.blank04.model.MyTranslator;
-import com.blank04.model.Request;
 import com.blank04.utils.FileConverter;
 import com.deepl.api.DeepLException;
 import net.sourceforge.tess4j.TesseractException;
